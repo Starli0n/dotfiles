@@ -1,0 +1,82 @@
+#!/bin/bash
+# Bash wrappers for docker run commands
+
+export DOCKER_REPO_PREFIX=starli0n
+export DOCKER_ENV_PROXY="-e NO_PROXY \
+    -e no_proxy \
+    -e http_proxy \
+    -e HTTP_PROXY \
+    -e https_proxy \
+    -e HTTPS_PROXY"
+export DOCKER_X11_ARGS="-e DISPLAY \
+    -v ${HOME}/.Xauthority:/root/.Xauthority:rw \
+    -v /tmp/.X11-unix:/tmp/.X11-unix"
+export DOCKER_DEBUG=0
+
+#
+# Helper Functions
+#
+del_stopped(){
+	local name=$1
+	local state
+	state=$(docker inspect --format "{{.State.Running}}" "$name" 2>/dev/null)
+
+	if [[ "$state" == "false" ]]; then
+		docker rm "$name"
+	fi
+}
+
+docker_run_app(){
+    local DOCKER_RUN_APP="docker run -d ${DOCKER_ENV_PROXY} ${DOCKER_EXTRA_ARGS} \
+    --name ${DOCKER_IMAGE} ${DOCKER_REPO_PREFIX}/${DOCKER_IMAGE}"
+    if [ ${DOCKER_DEBUG} -ne 0]; then
+        echo ${DOCKER_RUN_APP} "$@"
+    fi
+    eval ${DOCKER_RUN_APP} "$@"
+}
+
+docker_run_cmd(){
+    local DOCKER_RUN_CMD="docker run -it --rm ${DOCKER_ENV_PROXY} ${DOCKER_EXTRA_ARGS} \
+    --name ${DOCKER_IMAGE} ${DOCKER_REPO_PREFIX}/${DOCKER_IMAGE}"
+    if [ ${DOCKER_DEBUG} -ne 0 ]; then
+        echo ${DOCKER_RUN_CMD} "$@"
+    fi
+    eval ${DOCKER_RUN_CMD} "$@"
+}
+
+#
+# Container Functions
+#
+rust__(){
+    DOCKER_REPO_PREFIX=docker.io
+    DOCKER_IMAGE=rust
+    DOCKER_EXTRA_ARGS="-e USER -u "$(id -u)":"$(id -g)" -v ${PWD}:/usr/src -w /usr/src"
+}
+
+cargo(){
+    rust__
+    docker_run_cmd cargo "$@"
+}
+
+rust(){
+    rust__
+	docker_run_cmd "./$@"
+}
+
+rust-shell(){
+    rust__
+    docker_run_cmd "/bin/bash"
+}
+
+rustc(){
+    rust__
+    docker_run_cmd rustc "$@"
+}
+
+vscode(){
+    local DOCKER_IMAGE=vscode
+    local DOCKER_EXTRA_ARGS="${DOCKER_X11_ARGS} -v /etc/machine-id:/etc/machine-id"
+
+	del_stopped ${DOCKER_IMAGE}
+	docker_run_app
+}

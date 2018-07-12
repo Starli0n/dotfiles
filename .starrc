@@ -1,0 +1,258 @@
+#echo .starrc
+
+### Default Path
+# Print default PATH
+#echo -e PATH=\\n${PATH//:/\\n}
+export PATH="/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin"
+
+
+##############
+### COLORS ###
+##############
+
+### ANSI COLORS
+CRE="$(echo -e '\r\033[K')"
+RED="$(echo -e '\033[1;31m')"
+GREEN="$(echo -e '\033[1;32m')"
+YELLOW="$(echo -e '\033[1;33m')"
+BLUE="$(echo -e '\033[1;34m')"
+MAGENTA="$(echo -e '\033[1;35m')"
+CYAN="$(echo -e '\033[1;36m')"
+WHITE="$(echo -e '\033[1;37m')"
+NORMAL="$(echo -e '\033[0;39m')"
+
+_colors () {
+    echo "${CRE}CRE"
+    echo "${RED}RED"
+    echo "${GREEN}GREEN"
+    echo "${YELLOW}YELLOW"
+    echo "${BLUE}BLUE"
+    echo "${MAGENTA}MAGENTA"
+    echo "${CYAN}CYAN"
+    echo "${WHITE}WHITE"
+    echo "${NORMAL}NORMAL"
+}
+
+
+##########
+### OS ###
+##########
+
+os_type=$(uname)
+if [[ "$os_type" == "Linux" ]]; then
+
+    ### System
+    # df -h
+    # pvscan
+    alias sls='systemctl list-units --type=service' # /etc/systemd/system
+    alias sreload='systemctl daemon-reload'
+    alias sstart='systemctl start'
+    alias sstop='systemctl stop'
+    alias srestart='systemctl restart'
+    alias sstatus='systemctl status'
+    alias senable='systemctl enable'
+    alias sdisable='systemctl disable'
+    alias sactive='systemctl is-active'
+    alias sfailed='systemctl is-failed'
+    alias senv='systemctl show --property=Environment'
+    alias scat='systemctl cat'
+
+    ### Docker
+    alias dstart='systemctl start docker'
+    alias dstop='systemctl stop docker'
+    alias drestart='systemctl restart docker'
+    alias dreset='systemctl daemon-reload; systemctl restart docker'
+
+    alias usrc='cd /usr/local/src'
+    alias ubin='cd /usr/local/bin'
+fi
+
+
+################
+### VARIABLE ###
+################
+
+export RC_FILE="$HOME/.starrc"
+export XAUTHORITY=$HOME/.Xauthority
+
+export EDITOR='subl'
+export APPS="$HOME/apps"
+export DOWNLOADS="$HOME/downloads"
+export SRC_DIR="$HOME/src"
+unset TMOUT # Prevent disconnection
+
+### Path
+export PATH=$APPS/bin:$PATH
+
+### Load other files...
+for file in ~/.{dockerfunc,extra}; do
+	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
+		source "$file"
+	fi
+done
+unset file
+
+
+#############
+### ALIAS ###
+#############
+
+### aliases
+alias ralias='source $RC_FILE'
+alias aliases='$EDITOR $RC_FILE'
+alias aliash='cat $RC_FILE'
+
+### Shell
+alias rm='rm -i'
+alias cp='cp -i'
+alias mv='mv -i'
+alias cls='clear'
+alias l='ls -plah --color'
+alias l.='ls -dUlph --show-control-chars -F --color -- .* *'
+alias lh='ls --help'
+alias spath='echo -e ${PATH//:/\\n}'
+alias lib='echo -e ${LD_LIBRARY_PATH//:/\\n}'
+alias ..='cd ..'
+alias cd..='cd ..'
+mkd() { # Create a new directory and enter it
+	mkdir -p "$@"
+	cd "$@" || exit
+}
+alias app='cd $APPS'
+alias dwl='cd $DOWNLOADS'
+alias src='cd $SRC_DIR'
+alias work='cd $WORK'
+alias ph='pushd'
+alias pp='popd'
+alias setv='_setv(){ env | grep -i ^$1; }; _setv' # Show variables starting with $1
+alias mg='_mg(){ more "$2" | grep -i ^$1; }; _mg'
+alias cg='_mg(){ eval "${*:2}" | grep -i ^$1; }; _mg'
+alias h='cat $HOME/.bash_history'
+alias clsh='cat /dev/null>$HOME/.bash_history'
+alias cpwd='pwd; pwd | xclip'
+alias m='make'
+alias mi='make -i'
+alias ma='_ma(){ ARGS="$(echo \"${@:2}\")"; make ARGS="${ARGS}" $1 }; _ma'
+
+### Network
+alias ip='ifconfig'
+alias ipa='ifconfig -a'
+alias dns='echo set all | nslookup'
+alias port='netstat -a | grep' # @port (netstat -tlnp)
+alias pdump='tcpdump tcp port' # @port
+
+### Process
+alias psa='ps -aef'
+alias k1='kill %1'
+
+### Proxy
+uproxy () {
+    unset http_proxy
+    unset https_proxy
+    unset HTTP_PROXY
+    unset HTTPS_PROXY
+    unset no_proxy
+    unset NO_PROXY
+    echo proxy unset
+}
+_proxy () {
+    export http_proxy=$1
+    export https_proxy=$1
+    export HTTP_PROXY=$1
+    export HTTPS_PROXY=$1
+    echo proxy=$1
+}
+#alias proxy='_proxy http://proxy-name.fr:3128'
+#alias proxy-local='_proxy socks5://localhost:3128'
+
+### Git
+alias g='git'
+alias gg='python $APPS/colorcfg/colorcfg.pyc $HOME/.gitconfig'
+alias gl='git log --pretty=oneline --color --abbrev-commit --graph --decorate --all'
+alias gll='git log --pretty=oneline --color --abbrev-commit --graph --decorate --first-parent'
+alias gst='git status'
+alias gdt='git difftool'
+alias gh='cat $HOME/.gitconfig'
+alias gv='git --version'
+
+### Python
+# python -m compileall .
+alias venv='. venv/bin/activate'
+alias pv='python --version'
+
+### Go
+export GOBIN=$APPS/bin
+export GOPATH=$SRC_DIR/go/src
+export GOROOT=$SRC_DIR/go
+
+### Docker
+alias d='docker'
+alias dr='docker run'
+alias drn='docker run --name'
+alias dri='docker run -it'
+alias dh='_dh(){ docker $* --help; }; _dh'
+alias dhw='docker run hello-world'
+alias duber='docker run -dit --name uber --volume /var/shared/default:/var/shared ubuntu /bin/bash'
+alias dbh='_dbh(){ docker exec -it $* /bin/bash; }; _dbh'
+alias dps='docker ps'
+alias dpsa='docker ps -a'
+alias dpse='docker ps --filter status=exited'
+alias dpsl='docker ps -lq'
+alias dl='docker logs -f'
+alias di='docker images'
+alias dp='docker pull'
+alias ddt='docker diff'
+alias dci='docker commit'
+alias ds='_ds(){ pushd $DOCKER_HOME; docker save -o Image/${1/\//-}.tar $1; popd; }; _ds' # Replace '/' by '-' in image name
+alias dload='_ds(){ pushd $DOCKER_HOME; docker load -i Image/$1.tar; popd; }; _ds'
+alias drm='docker rm -f'
+alias drme='docker rm $(docker ps --filter status=exited --quiet)'
+alias drmc='docker rm $(docker ps --filter status=created --quiet)'
+alias drmi='docker rmi'
+alias drmid='docker rmi $(docker images -f "dangling=true" -q)'
+alias drmvd='docker volume rm $(docker volume ls -f "dangling=true" -q)'
+alias dinf='docker info'
+alias dv='docker version'
+
+### docker-compose
+alias dc='docker-compose'
+alias dcu='docker-compose up' # => docker-compose -f docker-compose.yml -f docker-compose.override.yml up
+alias dcd='docker-compose down' # => docker-compose -f docker-compose.yml -f docker-compose.override.yml down
+alias dcup='docker-compose -f docker-compose.yml -f production.yml up'
+alias dcdp='docker-compose -f docker-compose.yml -f production.yml down'
+
+### Ansible
+alias a='ansible'
+alias ag='ansible-galaxy'
+alias act='ansible-container'
+alias av='ansible --version'
+
+### Versions
+ver () {
+  git --version
+  which git
+  echo
+
+  python --version
+  which python
+  echo
+
+  ansible --version
+  which ansible
+  echo
+
+  docker --version
+  which docker
+  echo
+
+  docker-compose --version
+  which docker-compose
+  echo
+
+  echo http_proxy=$http_proxy
+  echo https_proxy=$https_proxy
+  echo no_proxy=$no_proxy
+  echo HTTP_PROXY=$HTTP_PROXY
+  echo HTTPS_PROXY=$HTTPS_PROXY
+  echo NO_PROXY=$NO_PROXY
+}
