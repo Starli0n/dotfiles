@@ -38,8 +38,10 @@ _colors () {
 ### OS ###
 ##########
 
-os_type=$(uname)
-if [[ "$os_type" == "Linux" ]]; then
+export OS_TYPE=$(uname)
+if [[ "$OS_TYPE" == "Linux" ]]; then
+
+    export GIT_OPEN_URL=open
 
     ### System
     # df -h
@@ -65,6 +67,10 @@ if [[ "$os_type" == "Linux" ]]; then
 
     alias usrc='cd /usr/local/src'
     alias ubin='cd /usr/local/bin'
+
+else
+
+    export GIT_OPEN_URL=start
 fi
 
 
@@ -75,7 +81,8 @@ fi
 export RC_FILE="$HOME/.starrc"
 export XAUTHORITY=$HOME/.Xauthority
 
-export EDITOR='subl'
+export EDITOR="subl"
+export GIT_EDITOR="$EDITOR -w"
 export APPS="$HOME/apps"
 export DOWNLOADS="$HOME/downloads"
 export SRC_DIR="$HOME/src"

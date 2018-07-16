@@ -37,3 +37,17 @@ root(){
 ```
 
 The `.extra` dotfile enables to override default variables and is not tracked.
+
+
+## Git
+
+The variable `$GIT_EDITOR` define the editor used by git.
+
+Requirements for `git tools`:
+- `bcomp` should be defined for Linux or macOS (ex: `ln -s /usr/bin/bcompare $APPS/bin/bcomp`)
+- `$WINMERGE_BIN` should be defined in `.extra` dotfile (`C:\Program Files (x86)\WinMerge\WinMergeU.exe`)
+
+The variable `$GIT_OPEN_URL` define the way to open the URL git:
+- `open` on Linux
+- `start` on Windows
+- `echo` on a headless server (Override the variable in the `.extra` dotfile)
