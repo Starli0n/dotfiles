@@ -23,7 +23,7 @@ elif [ "$1" = "difftool" ] && [ "$#" -eq 4 ] ; then
 		echo "   Left : $2"
 		echo "  Right : $3"
 		echo
-		if [ "$OS_TYPE" == "Linux" ]; then
+		if [ "$OS_TYPE" == "Linux" ] || [ "$OS_TYPE" == "Darwin" ]; then
 			"bcomp" -title1="Base - $2" -title2="$CAPTION - $3" "$2" "$3"
 		else
 			"$WINMERGE_BIN" -e -u -dl "Base - $2" -dr "$CAPTION - $3" "$2" "$3"

@@ -37,6 +37,10 @@ applications:
 system: ## System specific
 	if [[ "$(os_type)" == "Linux" ]]; then \
 		git config --global --unset core.autocrlf; \
-	else # Windows \
+	elif [[ "$(os_type)" == "Darwin" ]]; then \
+		git config --global --unset core.autocrlf; \
+		git config --global core.pager cat; \
+		: \
+	else \
 		git config --global core.autocrlf input; \
 	fi

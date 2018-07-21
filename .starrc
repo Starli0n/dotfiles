@@ -3,7 +3,7 @@
 ### Default Path
 # Print default PATH
 #echo -e PATH=\\n${PATH//:/\\n}
-export PATH="/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/sbin"
+export PATH="/usr/local/bin:/usr/bin"
 
 
 ##############
@@ -41,6 +41,7 @@ _colors () {
 export OS_TYPE=$(uname)
 if [[ "$OS_TYPE" == "Linux" ]]; then
 
+    export PATH="$PATH:/usr/local/sbin:/usr/sbin"
     export GIT_OPEN_URL=open
 
     ### System
@@ -67,6 +68,17 @@ if [[ "$OS_TYPE" == "Linux" ]]; then
 
     alias usrc='cd /usr/local/src'
     alias ubin='cd /usr/local/bin'
+
+    alias l='ls -plah --color'
+    alias l.='ls -dUlph --show-control-chars -F --color -- .* *'
+
+elif [[ "$OS_TYPE" == "Darwin" ]]; then
+
+    export PATH="$PATH:/bin:/usr/sbin:/sbin"
+    export GIT_OPEN_URL=open
+
+    alias l='ls -plahG'
+    alias l.='ls -dUlphG -F -- .* *'
 
 else
 
@@ -114,8 +126,6 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias cls='clear'
-alias l='ls -plah --color'
-alias l.='ls -dUlph --show-control-chars -F --color -- .* *'
 alias lh='ls --help'
 alias spath='echo -e ${PATH//:/\\n}'
 alias lib='echo -e ${LD_LIBRARY_PATH//:/\\n}'
