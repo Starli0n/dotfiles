@@ -110,7 +110,8 @@
 	rbu = rebase upstream/master
 
 	mg = merge
-	mgu = merge upstream/master
+	mgffo = merge --ff-only
+	mgu = merge upstream/master --ff-only
 	po = push origin master # Push local commits to remote repository branch @BRANCH_NAME
 	pom = push origin master # Push local commits to remote repository
 	pomf = push origin master --force # Force push

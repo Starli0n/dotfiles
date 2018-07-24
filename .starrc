@@ -79,10 +79,13 @@ elif [[ "$OS_TYPE" == "Darwin" ]]; then
 
     alias l='ls -plahG'
     alias l.='ls -dUlphG -F -- .* *'
+    alias e.='open .'
 
 else
 
     export GIT_OPEN_URL=start
+
+    alias e.='start .'
 fi
 
 
@@ -217,19 +220,24 @@ alias dpse='docker ps --filter status=exited'
 alias dpsl='docker ps -lq'
 alias dl='docker logs -f'
 alias di='docker images'
+alias dia='docker images -a'
 alias dp='docker pull'
 alias ddt='docker diff'
 alias dci='docker commit'
+alias dv='docker volume'
+alias dn='docker network'
 alias ds='_ds(){ pushd $DOCKER_HOME; docker save -o Image/${1/\//-}.tar $1; popd; }; _ds' # Replace '/' by '-' in image name
 alias dload='_ds(){ pushd $DOCKER_HOME; docker load -i Image/$1.tar; popd; }; _ds'
 alias drm='docker rm -f'
 alias drme='docker rm $(docker ps --filter status=exited --quiet)'
 alias drmc='docker rm $(docker ps --filter status=created --quiet)'
+alias drma='docker rm -f $(docker ps -a -q)'
 alias drmi='docker rmi'
 alias drmid='docker rmi $(docker images -f "dangling=true" -q)'
+alias drmia='docker rmi $(docker images -q)'
 alias drmvd='docker volume rm $(docker volume ls -f "dangling=true" -q)'
+alias drmnc='docker network rm $(docker network ls --filter type=custom -q)'
 alias dinf='docker info'
-alias dv='docker version'
 
 ### docker-compose
 alias dc='docker-compose'
@@ -259,10 +267,12 @@ ver () {
   echo
 
   docker --version
+  docker version
   which docker
   echo
 
   docker-compose --version
+  docker-compose version
   which docker-compose
   echo
 

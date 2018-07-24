@@ -1,4 +1,4 @@
-os_type=`uname`
+os_type=$(shell uname)
 
 .PHONY: all
 all: dotfiles extra applications system
@@ -9,7 +9,7 @@ dotfiles: ## Installs the dotfiles.
 	# add aliases for dotfiles
 	for file in $(shell find $(CURDIR) -name ".*" -not -name ".gitignore" -not -name ".git" -not -name ".gitconfig"); do \
 		f=$$(basename $$file); \
-		ln -fn $$file $(HOME)/$$f; \
+		ln -sfn $$file $(HOME)/$$f; \
 	done; \
 	ln -sfn $(CURDIR)/.gitconfig $(HOME)/.gitconfig
 	ln -sfn $(CURDIR)/starli0n.zsh-theme $(HOME)/.oh-my-zsh/themes/starli0n.zsh-theme
@@ -37,10 +37,12 @@ applications:
 system: ## System specific
 	if [[ "$(os_type)" == "Linux" ]]; then \
 		git config --global --unset core.autocrlf; \
+		:; \
 	elif [[ "$(os_type)" == "Darwin" ]]; then \
 		git config --global --unset core.autocrlf; \
-		git config --global core.pager cat; \
-		: \
+		git config --global core.pager cat; :; \
+		:; \
 	else \
 		git config --global core.autocrlf input; \
+		:; \
 	fi
