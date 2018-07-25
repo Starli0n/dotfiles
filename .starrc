@@ -71,6 +71,7 @@ if [[ "$OS_TYPE" == "Linux" ]]; then
 
     alias l='ls -plah --color'
     alias l.='ls -dUlph --show-control-chars -F --color -- .* *'
+    alias cpwd='pwd; pwd | xclip'
 
 elif [[ "$OS_TYPE" == "Darwin" ]]; then
 
@@ -80,6 +81,7 @@ elif [[ "$OS_TYPE" == "Darwin" ]]; then
     alias l='ls -plahG'
     alias l.='ls -dUlphG -F -- .* *'
     alias e.='open .'
+    alias cpwd='pwd; pwd | pbcopy'
 
 else
 
@@ -149,7 +151,6 @@ alias mg='_mg(){ more "$2" | grep -i ^$1; }; _mg'
 alias cg='_mg(){ eval "${*:2}" | grep -i ^$1; }; _mg'
 alias h='cat $HOME/.bash_history'
 alias clsh='cat /dev/null>$HOME/.bash_history'
-alias cpwd='pwd; pwd | xclip'
 alias m='make'
 alias mi='make -i'
 alias ma='_ma(){ ARGS="$(echo \"${@:2}\")"; make ARGS="${ARGS}" $1 }; _ma'
