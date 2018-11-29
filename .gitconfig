@@ -100,7 +100,7 @@
 
 	ft = fetch
 	ftu = fetch upstream master
-	fta = fetch --all
+	fta = fetch --all --prune
 	fts = submodule update --remote # Fetch submodule
 	sft = "!git fetch --all && git submodule update --remote" # Super fetch
 

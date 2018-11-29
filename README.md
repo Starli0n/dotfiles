@@ -34,6 +34,23 @@ root(){
         source $HOME/.shell_zsh_sesu.sh
     fi
 }
+
+proxy () {
+	export PROXY_USER=user
+	echo -n "Password:"
+	read -s PROXY_PASS
+	export http_proxy=http://$PROXY_USER:$PROXY_PASS@proxy-url:8080
+	export https_proxy=http://$PROXY_USER:$PROXY_PASS@proxy-url:8080
+	export HTTP_PROXY=http://$PROXY_USER:$PROXY_PASS@proxy-url:8080
+	export HTTPS_PROXY=http://$PROXY_USER:$PROXY_PASS@proxy-url:8080
+	export no_proxy="localhost,127.0.0.1,localaddress,.localdomain,127.*,192.168.*,172.*,10.*"
+	export NO_PROXY="localhost,127.0.0.1,localaddress,.localdomain,127.*,192.168.*,172.*,10.*"
+}
+
+# On a headless server
+export EDITOR='vim'
+export GIT_EDITOR=$EDITOR
+export GIT_OPEN_URL=echo
 ```
 
 The `.extra` dotfile enables to override default variables and is not tracked.

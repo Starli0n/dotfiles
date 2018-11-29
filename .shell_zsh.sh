@@ -11,4 +11,8 @@ if [[ "$(whoami)" == "root" ]]; then
     fi
 fi
 
-/bin/zsh
+if [[ -z "$@" ]]; then
+    /bin/zsh
+else
+    /bin/zsh -c "$@"
+fi
