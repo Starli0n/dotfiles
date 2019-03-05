@@ -36,16 +36,23 @@ root(){
 }
 
 proxy () {
-	export PROXY_USER=user
+	echo -n "Login:"
+	read -s PROXY_USER
+	echo
 	echo -n "Password:"
 	read -s PROXY_PASS
+	echo
 	export http_proxy=http://$PROXY_USER:$PROXY_PASS@proxy-url:8080
 	export https_proxy=http://$PROXY_USER:$PROXY_PASS@proxy-url:8080
 	export HTTP_PROXY=http://$PROXY_USER:$PROXY_PASS@proxy-url:8080
 	export HTTPS_PROXY=http://$PROXY_USER:$PROXY_PASS@proxy-url:8080
 	export no_proxy="localhost,127.0.0.1,localaddress,.localdomain,127.*,192.168.*,172.*,10.*"
 	export NO_PROXY="localhost,127.0.0.1,localaddress,.localdomain,127.*,192.168.*,172.*,10.*"
+	export PIP_INDEX_URL=https://$PROXY_USER:$PROXY_PASS@repository.com
+	export npm_config_proxy=$http_proxy
+	export npm_config_https_proxy=$https_proxy
 }
+
 
 # On a headless server
 export EDITOR='vim'
