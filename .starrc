@@ -3,6 +3,7 @@
 ### Default Path
 # Print default PATH
 #echo -e PATH=\\n${PATH//:/\\n}
+export INIT_PATH=$PATH
 export PATH="/usr/local/bin:/usr/bin"
 
 
@@ -85,9 +86,17 @@ elif [[ "$OS_TYPE" == "Darwin" ]]; then
 
 else
 
+    export PATH="$INIT_PATH:$PATH"
+
     export GIT_OPEN_URL=start
 
+    alias l='ls -plah --color'
+    alias l.='ls -dUlph --show-control-chars -F --color -- .* *'
+    alias cpwd='pwd; pwd | clip'
+
     alias e.='start .'
+
+    mkdir -p /tmp
 fi
 
 
@@ -198,7 +207,7 @@ alias gv='git --version'
 
 ### Python
 # python -m compileall .
-alias venv='. venv/bin/activate'
+alias venv='. venv/bin/activate 2> /dev/null || . venv/Scripts/activate 2> /dev/null || (echo No Python Virtual Env found; exit 127)'
 alias pv='python --version'
 
 ### Go

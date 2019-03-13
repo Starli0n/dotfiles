@@ -5,6 +5,7 @@
 	editor = $GIT_EDITOR
 	#pager = cat # Prevent keypress from log command or use git --no-pager
 	pager = more
+	autocrlf = input
 [http]
 	sslverify = false
 	#proxy = "http://user:pass@proxy.com:port"

@@ -62,6 +62,10 @@ export GIT_OPEN_URL=echo
 
 The `.extra` dotfile enables to override default variables and is not tracked.
 
+* Linux or macOS
+	* `make all`
+* Windows
+	* `make win`
 
 ## Git
 
