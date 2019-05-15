@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 if [ "$#" -eq 0 ] ; then
 	exit
@@ -9,6 +9,7 @@ elif [ "$1" = "shell" ] ; then
 
 # Diff Tool
 elif [ "$1" = "difftool" ] && [ "$#" -eq 4 ] ; then
+	echo "$(echo -e '\033[1;35m')================================================================================" # MAGENTA
 	if [ "$2" = "/dev/null" ] ; then
 		echo FileN : $3
 	elif [ "$3" = "/dev/null" ] ; then
@@ -22,8 +23,13 @@ elif [ "$1" = "difftool" ] && [ "$#" -eq 4 ] ; then
 		echo Comparing...
 		echo "   Left : $2"
 		echo "  Right : $3"
-		echo
-		if [ "$OS_TYPE" == "Linux" ] || [ "$OS_TYPE" == "Darwin" ]; then
+		echo "$(echo -e '\033[0;39m')" # Normal
+		if [ "${GIT_NO_GUI+x}" != "" ]; then
+			git diff --no-index "$2" "$3"
+			echo "$(echo -e '\033[1;35m')" && tput sc
+			read -n 1 -s -r -p "--- Press any key to continue ---"
+			tput rc && tput ed
+		elif [ "$OS_TYPE" == "Linux" ] || [ "$OS_TYPE" == "Darwin" ]; then
 			"bcomp" -title1="Base - $2" -title2="$CAPTION - $3" "$2" "$3"
 		else
 			"$WINMERGE_BIN" -e -u -dl "Base - $2" -dr "$CAPTION - $3" "$2" "$3"

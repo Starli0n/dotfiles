@@ -57,6 +57,7 @@ proxy () {
 # On a headless server
 export EDITOR='vim'
 export GIT_EDITOR=$EDITOR
+export GIT_NO_GUI=--git-no-gui # Used in ~/gitools.sh for difftool
 export GIT_OPEN_URL=echo
 ```
 

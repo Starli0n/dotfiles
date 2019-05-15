@@ -74,6 +74,12 @@ if [[ "$OS_TYPE" == "Linux" ]]; then
     alias l.='ls -dUlph --show-control-chars -F --color -- .* *'
     alias cpwd='pwd; pwd | xclip'
 
+    ### Network
+    alias ip='ifconfig'
+    alias ipa='ifconfig -a'
+    alias port='netstat -tulpn | grep'
+    alias portl='netstat -tulpn | grep LISTEN | grep'
+
 elif [[ "$OS_TYPE" == "Darwin" ]]; then
 
     export PATH="$PATH:/bin:/usr/sbin:/sbin"
@@ -84,6 +90,12 @@ elif [[ "$OS_TYPE" == "Darwin" ]]; then
     alias e.='open .'
     alias cpwd='pwd; pwd | pbcopy'
 
+    ### Network
+    alias ip='ifconfig'
+    alias ipa='ifconfig -a'
+    alias port='_port(){ lsof -nP -i4TCP:$1 }; _port'
+    alias portl='_portl(){ lsof -nP -i4TCP:$1 | grep LISTEN }; _portl'
+
 else
 
     export PATH="$INIT_PATH:$PATH"
@@ -92,9 +104,15 @@ else
 
     alias l='ls -plah --color'
     alias l.='ls -dUlph --show-control-chars -F --color -- .* *'
-    alias cpwd='pwd; pwd | clip'
-
     alias e.='start .'
+    alias cpwd='pwd; pwd | clip'
+    alias tree='cmd //c tree //F'
+
+    ### Network
+    alias ip='ipconfig'
+    alias ipa='ipconfig //all'
+    alias port='netstat -a | grep'
+    alias portl='netstat -a | grep LISTENING | grep'
 
     mkdir -p /tmp
 fi
@@ -156,6 +174,10 @@ alias work='cd $WORK'
 alias ph='pushd'
 alias pp='popd'
 alias setv='_setv(){ env | grep -i ^$1; }; _setv' # Show variables starting with $1
+alias f='_f(){ find . -name "$1"; }; _f' # @files
+alias fext='_fext(){ find . -name "*.$1"; }; _fext' # @ext
+alias fd='_fd(){ find $1 -name "$2"; }; _fd' # @dir @files
+alias fdext='_fdext(){ find $1 -name "*.$2"; }; _fdext' # @dir @ext
 alias mg='_mg(){ more "$2" | grep -i ^$1; }; _mg'
 alias cg='_mg(){ eval "${*:2}" | grep -i ^$1; }; _mg'
 alias h='cat $HOME/.bash_history'
@@ -165,10 +187,7 @@ alias mi='make -i'
 alias ma='_ma(){ ARGS="$(echo \"${@:2}\")"; make ARGS="${ARGS}" $1 }; _ma'
 
 ### Network
-alias ip='ifconfig'
-alias ipa='ifconfig -a'
 alias dns='echo set all | nslookup'
-alias port='netstat -a | grep' # @port (netstat -tlnp)
 alias pdump='tcpdump tcp port' # @port
 
 ### Process
