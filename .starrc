@@ -167,6 +167,7 @@ mkd() { # Create a new directory and enter it
 	mkdir -p "$@"
 	cd "$@" || exit
 }
+alias which='type -f' # Enables to 'which' functions
 alias app='cd $APPS'
 alias dwl='cd $DOWNLOADS'
 alias src='cd $SRC_DIR'

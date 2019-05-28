@@ -9,8 +9,6 @@ plugins=(
 
 source $ZSH/oh-my-zsh.sh
 
-alias which='type -f' # Enables to 'which' functions
-
 bindkey "^[[1~" beginning-of-line   # tmux
 bindkey '^[[4~' end-of-line         # tmux
 
