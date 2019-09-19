@@ -128,8 +128,8 @@ export XAUTHORITY=$HOME/.Xauthority
 export EDITOR="subl"
 export GIT_EDITOR="$EDITOR -w"
 export APPS="$HOME/apps"
-export DOWNLOADS="$HOME/downloads"
-export SRC_DIR="$HOME/src"
+export DOWNLOADS="$HOME/Downloads"
+export SRC_DIR="$HOME/Sources"
 unset TMOUT # Prevent disconnection
 
 ### Path
@@ -231,9 +231,9 @@ alias venv='. venv/bin/activate 2> /dev/null || . venv/Scripts/activate 2> /dev/
 alias pv='python --version'
 
 ### Go
-export GOBIN=$APPS/bin
-export GOPATH=$SRC_DIR/go/src
-export GOROOT=$SRC_DIR/go
+export GOPATH=$SRC_DIR/go # workspace location
+export GOBIN=$GOPATH/bin
+export PATH=$PATH:$GOBIN
 
 ### Docker
 alias d='docker'
