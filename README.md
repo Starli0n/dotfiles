@@ -65,6 +65,8 @@ The `.extra` dotfile enables to override default variables and is not tracked.
 
 * Linux or macOS
 	* `make all`
+* Ubuntu
+	* `make ubuntu`
 * Windows
 	* `make win`
 

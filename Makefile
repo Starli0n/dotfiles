@@ -7,18 +7,51 @@ env:
 	@echo OS_TYPE=$(OS_TYPE)
 
 .PHONY: all
-all: dotfiles extra applications system
+all: backup dotfiles extra applications system
+
+.PHONY: ubuntu
+ubuntu: backup dotfiles-zsh dotfiles-others extra applications system
+
+#@DATE_TIME=$(shell date +%Y%m%d%H%M%S); \
+.PHONY: backup
+backup:
+	@for file in .bashrc .profile .zshrc; do \
+		cp "$(HOME)/$$file" "$(HOME)/$$file.default"; \
+	done; \
 
 .PHONY: dotfiles
-dotfiles: ## Installs the dotfiles.
+dotfiles: dotfiles-bash dotfiles-zsh dotfiles-zsh-sesu dotfiles-others
+
+.PHONY: dotfiles-bash
+dotfiles-bash:
+	@make DOTFILE=.bash_profile -s symlink
+	@make DOTFILE=.bashrc -s symlink
+	@make DOTFILE=.profile -s symlink
+
+.PHONY: dotfiles-zsh
+dotfiles-zsh:
+	@make DOTFILE=.zshrc -s symlink
+	@make DOTFILE=.starli0n.zsh-theme -s symlink
+
+.PHONY: dotfiles-zsh-sesu
+dotfiles-zsh-sesu:
+	@make DOTFILE=.shell_zsh_sesu.sh -s symlink
+	@make DOTFILE=.shell_zsh.sh -s symlink
+
+.PHONY: dotfiles-others
+dotfiles-others:
 	touch ".extra"
-	# add aliases for dotfiles
-	for file in $(shell find $(CURDIR) -name ".*" -not -name ".gitignore" -not -name ".git" -not -name ".gitconfig"); do \
-		f=$$(basename $$file); \
-		ln -sfn "$$file" "$(HOME)/$$f"; \
-	done; \
-	ln -sfn "$(CURDIR)/.gitconfig" "$(HOME)/.gitconfig"
-	ln -sfn "$(CURDIR)/starli0n.zsh-theme" "$(HOME)/.oh-my-zsh/themes/starli0n.zsh-theme"
+	@make DOTFILE=.extra -s symlink
+	@make DOTFILE=.dockerfunc -s symlink
+	@make DOTFILE=.gitconfig -s symlink
+	@make DOTFILE=.gitools.sh -s symlink
+	@make DOTFILE=.npmrc -s symlink
+	@make DOTFILE=.starrc -s symlink
+	@make DOTFILE=.vimrc -s symlink
+
+.PHONY: symlink
+symlink:
+	ln -sfn "$(CURDIR)/$(DOTFILE)" "$(HOME)/$(DOTFILE)"
 
 .PHONY: extra
 extra: ## Create .extra dotfile
@@ -30,17 +63,17 @@ applications:
 	mkdir -p $(HOME)/.ssh
 	mkdir -p $(HOME)/apps/bin
 
-	# Add color to git config
-	cp -R $(CURDIR)/apps/colorcfg $(HOME)/apps/colorcfg
-	cd $(HOME)/apps/colorcfg && python -m compileall .
-
 	# Remote Sublime Text
 	curl -Lo $(HOME)/apps/bin/rsub https://raw.githubusercontent.com/aurora/rmate/master/rmate --insecure
 	chmod a+x $(HOME)/apps/bin/rsub
 	ln -sfn $(CURDIR)/.ssh/config $(HOME)/.ssh/config
 
+	# Add color to git config
+	cp -R $(CURDIR)/apps/colorcfg $(HOME)/apps/colorcfg
+	cd $(HOME)/apps/colorcfg && python -m compileall .
+
 .PHONY: system
-system: ## System specific
+system: # System specific
 	if [[ "$(OS_TYPE)" == "Linux" ]]; then \
 		git config --global --unset core.autocrlf; \
 		:; \
