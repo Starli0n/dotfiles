@@ -29,6 +29,9 @@ ln -s $HOME/.starli0n.zsh-theme .oh-my-zsh/themes/starli0n.zsh-theme
 
 Add some specific into the `.extra` dotfile like proxy etc...
 ```sh
+# Add here extra paths
+export PATH:$PATH:$EXTRA_PATH
+
 root(){
     if [ -f $HOME/.shell_zsh_sesu.sh ]; then
         source $HOME/.shell_zsh_sesu.sh
@@ -82,3 +85,36 @@ The variable `$GIT_OPEN_URL` define the way to open the URL git:
 - `open` on Linux
 - `start` on Windows
 - `echo` on a headless server (Override the variable in the `.extra` dotfile)
+
+## Ubuntu
+
+### Keyboard Shortcuts
+
+`Custom Shortcuts`
+
+```
+Activate Firefox
+wmctrl -x -a Navigator.Firefox
+Super + F
+
+Activate Gedit
+wmctrl -x -a org.gnome.gedit.Org.gnome.gedit
+Ctrl + <
+
+Activate Nautilus
+wmctrl -x -a org.gnome.Nautilus.Org.gnome.Nautilus
+Super + E
+
+Activate Terminal
+wmctrl -x -a gnome-terminal-server.Gnome-terminal
+Ctrl + ²
+```
+
+List apps: `wmctrl -lx`
+
+### Install Docker (TODO)
+
+- https://docs.docker.com/install/linux/docker-ce/ubuntu
+
+- https://medium.com/@Grigorkh/how-to-install-docker-on-ubuntu-19-10-60feae8fd382
+

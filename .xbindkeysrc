@@ -1,0 +1,8 @@
+# Mouse Back Button
+"xvkbd -text '\Cc'" # Sends Ctrl-c
+	b:8
+
+# Mouse Forword
+"xvkbd -text '\Cv'" # Sends Ctrl-v
+	b:9
+

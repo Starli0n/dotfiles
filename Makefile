@@ -10,9 +10,14 @@ env:
 all: backup dotfiles extra applications system
 
 .PHONY: ubuntu
-ubuntu: backup dotfiles-zsh dotfiles-others extra applications system
+ubuntu: backup apt-get dotfiles-zsh dotfiles-others extra applications system
 
-#@DATE_TIME=$(shell date +%Y%m%d%H%M%S); \
+.PHONY: apt-get
+apt-get:
+	sudo apt-get update -y
+	sudo apt-get install -y curl git zsh \
+		wmctrl xbindkeys xvkbd # Key bindings and shortcuts
+
 .PHONY: backup
 backup:
 	@for file in .bashrc .profile .zshrc; do \
@@ -48,6 +53,7 @@ dotfiles-others:
 	@make DOTFILE=.npmrc -s symlink
 	@make DOTFILE=.starrc -s symlink
 	@make DOTFILE=.vimrc -s symlink
+	@make DOTFILE=.xbindkeysrc -s symlink
 
 .PHONY: symlink
 symlink:

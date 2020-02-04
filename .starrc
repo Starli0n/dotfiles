@@ -80,6 +80,15 @@ if [[ "$OS_TYPE" == "Linux" ]]; then
     alias port='netstat -tulpn | grep'
     alias portl='netstat -tulpn | grep LISTEN | grep'
 
+		### GUI
+		if [[ "$GDMSESSION" == "ubuntu" ]]; then
+
+			alias ge='gedit'
+			alias e.='xdg-open .'
+			alias rxbindkeys='killall -9 xbindkeys; xbindkeys'
+
+		fi
+
 elif [[ "$OS_TYPE" == "Darwin" ]]; then
 
     export PATH="$PATH:/bin:/usr/sbin:/sbin"
@@ -122,6 +131,8 @@ fi
 ### VARIABLE ###
 ################
 
+# DATE_TIME=$(date +%Y%m%d%H%M%S) # Create a time stamp
+
 export RC_FILE="$HOME/.starrc"
 export XAUTHORITY=$HOME/.Xauthority
 
@@ -159,6 +170,7 @@ alias cp='cp -i'
 alias mv='mv -i'
 alias cls='clear'
 alias lh='ls --help'
+alias ipath='echo -e ${INIT_PATH//:/\\n}'
 alias spath='echo -e ${PATH//:/\\n}'
 alias lib='echo -e ${LD_LIBRARY_PATH//:/\\n}'
 alias ..='cd ..'
