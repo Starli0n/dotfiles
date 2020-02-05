@@ -1,0 +1,3 @@
+[includeIf "gitdir:~/Sources/github.com/"]
+	path = ~/Sources/github.com/.gitconfig.inc
+

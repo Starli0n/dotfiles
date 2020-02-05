@@ -54,6 +54,9 @@ dotfiles-others:
 	@make DOTFILE=.starrc -s symlink
 	@make DOTFILE=.vimrc -s symlink
 	@make DOTFILE=.xbindkeysrc -s symlink
+	mkdir -p "$(HOME)/Sources/github.com"
+	cp "$(CURDIR)/.gitconfig.id" "$(HOME)/.gitconfig.id"
+	cp "$(CURDIR)/.gitconfig.inc" "$(HOME)/Sources/github.com/.gitconfig.inc"
 
 .PHONY: symlink
 symlink:

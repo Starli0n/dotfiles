@@ -43,7 +43,9 @@ export OS_TYPE=$(uname)
 if [[ "$OS_TYPE" == "Linux" ]]; then
 
     export PATH="$PATH:/usr/local/sbin:/usr/sbin"
-    export GIT_OPEN_URL=open
+    export GIT_OPEN_URL=echo
+
+    alias root='sudo -s'
 
     ### System
     # df -h
@@ -80,14 +82,16 @@ if [[ "$OS_TYPE" == "Linux" ]]; then
     alias port='netstat -tulpn | grep'
     alias portl='netstat -tulpn | grep LISTEN | grep'
 
-		### GUI
-		if [[ "$GDMSESSION" == "ubuntu" ]]; then
+    ### GUI
+    if [[ "$GDMSESSION" == "ubuntu" ]]; then
 
-			alias ge='gedit'
-			alias e.='xdg-open .'
-			alias rxbindkeys='killall -9 xbindkeys; xbindkeys'
+        export GIT_OPEN_URL=xdg-open
 
-		fi
+        alias ge='gedit'
+        alias e.='xdg-open .'
+        alias rxbindkeys='killall -9 xbindkeys; xbindkeys'
+
+    fi
 
 elif [[ "$OS_TYPE" == "Darwin" ]]; then
 
@@ -124,6 +128,7 @@ else
     alias portl='netstat -a | grep LISTENING | grep'
 
     mkdir -p /tmp
+
 fi
 
 
@@ -148,9 +153,9 @@ export PATH=$APPS/bin:$PATH
 
 ### Load other files...
 for file in ~/.{dockerfunc,extra}; do
-	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
-		source "$file"
-	fi
+    if [[ -r "$file" ]] && [[ -f "$file" ]]; then
+        source "$file"
+    fi
 done
 unset file
 
@@ -176,8 +181,8 @@ alias lib='echo -e ${LD_LIBRARY_PATH//:/\\n}'
 alias ..='cd ..'
 alias cd..='cd ..'
 mkd() { # Create a new directory and enter it
-	mkdir -p "$@"
-	cd "$@" || exit
+    mkdir -p "$@"
+    cd "$@" || exit
 }
 alias which='type -f' # Enables to 'which' functions
 alias app='cd $APPS'

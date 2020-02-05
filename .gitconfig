@@ -29,17 +29,22 @@
 [mergetool "gitools"]
 	trustExitCode = true
 	cmd = ~/.gitools.sh mergetool \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
+[include]
+	path = ~/.gitconfig.id
 [alias]
 	h = help
-	g = "!~/.gitools.sh config .gitconfig" # Show me
+	g = "!cat ~/.gitconfig" # Show me
 	cfg = config -e # Edit local config
 	gcfg = config --global -e # Edit global config
 	scfg = config --system -e # Edit global config
 
+	whoami = "!git config user.name; git config user.email"
+	gwhoami = "!git config --global user.name; git config --global user.email"
+
 	rep = "!$GIT_OPEN_URL `git config remote.origin.url`"
 	repu = "!$GIT_OPEN_URL `git config remote.upstream.url`"
 	s = "!~/.gitools.sh shell" # Use git shell [@PARAMS]
-	la = "!git config --get-regexp alias | cut -c 7-"
+	alias = "!git config --get-regexp alias | cut -c 7-"
 
 	up = remote add upstream # Add forked repo with all branches @URL
 	upm = remote add --track master upstream # Add forked repo @URL
