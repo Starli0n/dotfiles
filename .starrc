@@ -45,7 +45,7 @@ if [[ "$OS_TYPE" == "Linux" ]]; then
     export PATH="$PATH:/usr/local/sbin:/usr/sbin"
     export GIT_OPEN_URL=echo
 
-    alias root='sudo -s'
+    alias root='sudo -Es'
 
     ### System
     # df -h
@@ -61,6 +61,7 @@ if [[ "$OS_TYPE" == "Linux" ]]; then
     alias sactive='systemctl is-active'
     alias sfailed='systemctl is-failed'
     alias senv='systemctl show --property=Environment'
+    alias suenv='systemctl --user show-environment'
     alias scat='systemctl cat'
 
     ### Docker
@@ -244,6 +245,9 @@ alias gv='git --version'
 
 ### Python
 # python -m compileall .
+alias venv-create='python3 -m venv venv'
+alias venv-freeze='pip freeze 2>/dev/null > requirements.txt'
+alias venv-install='pip install -r requirements.txt'
 alias venv='. venv/bin/activate 2> /dev/null || . venv/Scripts/activate 2> /dev/null || (echo No Python Virtual Env found; exit 127)'
 alias pv='python --version'
 
@@ -296,6 +300,10 @@ alias dcd='docker-compose down' # => docker-compose -f docker-compose.yml -f doc
 alias dcup='docker-compose -f docker-compose.yml -f production.yml up'
 alias dcdp='docker-compose -f docker-compose.yml -f production.yml down'
 
+### kubernetes
+alias k='kubectl'
+alias kd='kind'
+
 ### Ansible
 alias a='ansible'
 alias ag='ansible-galaxy'
@@ -312,8 +320,8 @@ ver () {
   which python
   echo
 
-  ansible --version
-  which ansible
+  go version
+  which go
   echo
 
   docker --version
@@ -324,6 +332,14 @@ ver () {
   docker-compose --version
   docker-compose version
   which docker-compose
+  echo
+
+  kubectl version --client
+  which kubectl
+  echo
+
+  ansible --version
+  which ansible
   echo
 
   echo http_proxy=$http_proxy

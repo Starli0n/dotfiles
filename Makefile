@@ -80,6 +80,7 @@ applications:
 	# Add color to git config
 	cp -R $(CURDIR)/apps/colorcfg $(HOME)/apps/colorcfg
 	cd $(HOME)/apps/colorcfg && python -m compileall .
+	mv $(HOME)/apps/colorcfg/__pycache__/colorcfg.cpython-37.pyc $(HOME)/apps/colorcfg/colorcfg.pyc
 
 .PHONY: system
 system: # System specific
