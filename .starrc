@@ -204,6 +204,8 @@ alias clsh='cat /dev/null>$HOME/.bash_history'
 alias m='make'
 alias mi='make -i'
 alias ma='_ma(){ ARGS="$(echo \"${@:2}\")"; make ARGS="${ARGS}" $1 }; _ma'
+alias encode64='_encode64(){ echo $@ | base64 }; _encode64' # @data
+alias decode64='_decode64(){ echo $1 | base64 -d }; _decode64' # @data-in-64
 
 ### Network
 alias dns='echo set all | nslookup'

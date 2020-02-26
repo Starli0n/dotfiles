@@ -16,7 +16,8 @@ if [[ "$MSYSTEM" == "MINGW64" ]]; then
 			echo $RED
 		fi
 	}
-	export PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n${RED}\u${BLUE}@${GREEN}\h ${MAGENTA}$MSYSTEM ${YELLOW}$PWD${CYAN}`__git_ps1``__status_ps1`\nλ ${NORMAL}'
+
+	export PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n\[\033[31m\]\u\[\033[34m\]@\[\033[32m\]\h \[\033[35m\]$MSYSTEM \[\033[33m\]$PWD\[\033[36m\]`__git_ps1``__status_ps1`\nλ \[\033[0m\]'
 else
 	# default: export PS1="[\u@\h \W]\$"
 	export PS1="\n$BLUE\u$CYAN@$MAGENTA\h $GREEN\w $RED\$(git branch 2> /dev/null)\n${YELLOW}λ $NORMAL"
