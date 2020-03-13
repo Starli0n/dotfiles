@@ -1,5 +1,8 @@
 OS_TYPE=$(shell uname)
 
+SHELL = bash
+.ONESHELL:
+
 .PHONY: env
 env:
 	@echo HOME=$(HOME)
@@ -66,6 +69,16 @@ symlink:
 extra: ## Create .extra dotfile
 	echo "alias gguser='git config --global user.name Starli0n; git config --global user.email Starli0n@users.noreply.github.com'">>"$(HOME)/.extra"
 	echo "alias guser='git config user.name Starli0n; git config user.email Starli0n@users.noreply.github.com'">>"$(HOME)/.extra"
+
+.PHONY: headless
+headless:
+	cat <<- EOF >> .extra
+		# On a headless server
+		export EDITOR='vim'
+		export GIT_EDITOR=$$EDITOR
+		export GIT_NO_GUI=--git-no-gui # Used in ~/gitools.sh for difftool
+		export GIT_OPEN_URL=echo
+	EOF
 
 .PHONY: applications
 applications:

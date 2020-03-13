@@ -3,8 +3,8 @@
 ### Default Path
 # Print default PATH
 #echo -e PATH=\\n${PATH//:/\\n}
-export INIT_PATH=$PATH
-export PATH="/usr/local/bin:/usr/bin"
+[[ "$INIT_PATH" == "" ]] && export INIT_PATH=$PATH
+export PATH=$INIT_PATH
 
 
 ##############
