@@ -5,7 +5,7 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="starli0n"
 
 plugins=(
-  ansible docker docker-compose dircycle git go kubectl pip python virtualenv
+  ansible dircycle docker docker-compose git golang kubectl pip python virtualenv
 )
 
 source $ZSH/oh-my-zsh.sh
@@ -16,4 +16,3 @@ bindkey '^[[4~' end-of-line         # tmux
 if [ -f ~/.starrc ]; then
     . ~/.starrc
 fi
-

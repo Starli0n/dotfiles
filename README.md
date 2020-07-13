@@ -19,13 +19,38 @@ The `.bash_profile` dotfile only includes `.profile` and `.bashrc`.
 The `.profile` dotfile does nothing specific but I prefer to keep it into source control in case an installer changes it.
 
 
-## Installation
+## Prerequisite
 
-After installing [Oh My ZSH!](https://ohmyz.sh)
+- [Installing ZSH](https://github.com/ohmyzsh/ohmyzsh/wiki/Installing-ZSH)
+- [Install oh-my-zsh now](https://ohmyz.sh/#install)
+
+
+## Before Installation
 
 ```sh
-ln -s $HOME/.starli0n.zsh-theme .oh-my-zsh/themes/starli0n.zsh-theme
+$ cd
+$ mkdir -p $HOME/src/github.com/Starli0n
+$ cd $HOME/src/github.com/Starli0n
+$ git clone https://github.com/Starli0n/dotfiles.git
+$ cd dotfiles
 ```
+
+Assuming the command above was followed, the [default source directory](https://github.com/Starli0n/dotfiles/blob/master/Makefile#L3) is set to
+  - `$SRC_DIR = $HOME\src` _(parent of parent of parent of this repository)_
+
+The folder `src` can be changed to something like `Develop/Sources` therefore the variable `$SRC_DIR` will be computed as a consequence.
+
+Alternatively, the variable `$SRC_DIR` could be set manually with `export SRC_DIR=path-to-source` before installation if the architecture `$SRC_DIR/organization/user` is not respected.
+
+
+## Installation
+
+* Linux or macOS
+	* `make all`
+* Ubuntu
+	* `make ubuntu`
+* Windows
+	* `make win`
 
 Add some specific into the `.extra` dotfile like proxy etc...
 ```sh
@@ -66,12 +91,6 @@ export GIT_OPEN_URL=echo
 
 The `.extra` dotfile enables to override default variables and is not tracked.
 
-* Linux or macOS
-	* `make all`
-* Ubuntu
-	* `make ubuntu`
-* Windows
-	* `make win`
 
 ## Git
 
@@ -117,4 +136,3 @@ List apps: `wmctrl -lx`
 - https://docs.docker.com/install/linux/docker-ce/ubuntu
 
 - https://medium.com/@Grigorkh/how-to-install-docker-on-ubuntu-19-10-60feae8fd382
-

@@ -1,3 +1,2 @@
-[includeIf "gitdir:~/Sources/github.com/"]
-	path = ~/Sources/github.com/.gitconfig.inc
-
+[includeIf "gitdir:${SRC_DIR}/github.com/"]
+	path = ${SRC_DIR}/github.com/.gitconfig.inc

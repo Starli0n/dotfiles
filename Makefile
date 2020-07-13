@@ -1,13 +1,16 @@
-OS_TYPE=$(shell uname)
+OS_TYPE = $(shell uname)
+
+export SRC_DIR ?= $(shell dirname $(shell dirname $(shell dirname ${CURDIR})))
 
 SHELL = bash
 .ONESHELL:
 
 .PHONY: env
 env:
+	@echo OS_TYPE=$(OS_TYPE)
 	@echo HOME=$(HOME)
 	@echo CURDIR=$(CURDIR)
-	@echo OS_TYPE=$(OS_TYPE)
+	@echo SRC_DIR=$(SRC_DIR)
 
 .PHONY: all
 all: backup dotfiles extra applications system
@@ -39,7 +42,7 @@ dotfiles-bash:
 .PHONY: dotfiles-zsh
 dotfiles-zsh:
 	@make DOTFILE=.zshrc -s symlink
-	@make DOTFILE=.starli0n.zsh-theme -s symlink
+	ln -sfn $(CURDIR)/starli0n.zsh-theme $(HOME)/.oh-my-zsh/themes/starli0n.zsh-theme
 
 .PHONY: dotfiles-zsh-sesu
 dotfiles-zsh-sesu:
@@ -57,9 +60,9 @@ dotfiles-others:
 	@make DOTFILE=.starrc -s symlink
 	@make DOTFILE=.vimrc -s symlink
 	@make DOTFILE=.xbindkeysrc -s symlink
-	mkdir -p "$(HOME)/Sources/github.com"
-	cp "$(CURDIR)/.gitconfig.id" "$(HOME)/.gitconfig.id"
-	cp "$(CURDIR)/.gitconfig.inc" "$(HOME)/Sources/github.com/.gitconfig.inc"
+	mkdir -p "$(SRC_DIR)/github.com"
+	envsubst < "$(CURDIR)/.gitconfig.id" > "$(HOME)/.gitconfig.id"
+	cp "$(CURDIR)/.gitconfig.inc" "$(SRC_DIR)/github.com/.gitconfig.inc"
 
 .PHONY: symlink
 symlink:
