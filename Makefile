@@ -1,6 +1,7 @@
 OS_TYPE = $(shell uname)
 
-export SRC_DIR ?= $(shell dirname $(shell dirname $(shell dirname ${CURDIR})))
+export SRC_DIR ?= $(shell dirname $(shell dirname $(shell dirname $(CURDIR))))
+LF=$(shell $'\n')
 
 SHELL = bash
 .ONESHELL:
@@ -27,7 +28,9 @@ apt-get:
 .PHONY: backup
 backup:
 	@for file in .bashrc .profile .zshrc; do \
-		cp "$(HOME)/$$file" "$(HOME)/$$file.default"; \
+		if [[ ! -f "$(HOME)/$$file.default" ]]; then \
+			cp "$(HOME)/$$file" "$(HOME)/$$file.default"; \
+		fi; \
 	done; \
 
 .PHONY: dotfiles
@@ -69,13 +72,15 @@ symlink:
 	ln -sfn "$(CURDIR)/$(DOTFILE)" "$(HOME)/$(DOTFILE)"
 
 .PHONY: extra
-extra: ## Create .extra dotfile
-	echo "alias gguser='git config --global user.name Starli0n; git config --global user.email Starli0n@users.noreply.github.com'">>"$(HOME)/.extra"
-	echo "alias guser='git config user.name Starli0n; git config user.email Starli0n@users.noreply.github.com'">>"$(HOME)/.extra"
+extra:
+	@export PY3='$(shell which python3 > /dev/null 2>&1 || echo "# ")'
+	export WORK=$(CURDIR)
+	envsubst < .extra.tpl >> .extra
 
 .PHONY: headless
 headless:
 	cat <<- EOF >> .extra
+		$(LF)
 		# On a headless server
 		export EDITOR='vim'
 		export GIT_EDITOR=$$EDITOR
@@ -84,19 +89,12 @@ headless:
 	EOF
 
 .PHONY: applications
-applications:
-	mkdir -p $(HOME)/.ssh
-	mkdir -p $(HOME)/apps/bin
-
-	# Remote Sublime Text
-	curl -Lo $(HOME)/apps/bin/rsub https://raw.githubusercontent.com/aurora/rmate/master/rmate --insecure
-	chmod a+x $(HOME)/apps/bin/rsub
-	ln -sfn $(CURDIR)/.ssh/config $(HOME)/.ssh/config
-
+applications: # APPS is same as in .starrc
 	# Add color to git config
-	cp -R $(CURDIR)/apps/colorcfg $(HOME)/apps/colorcfg
-	cd $(HOME)/apps/colorcfg && python -m compileall .
-	mv $(HOME)/apps/colorcfg/__pycache__/colorcfg.cpython-37.pyc $(HOME)/apps/colorcfg/colorcfg.pyc
+	@APPS_BIN="$(HOME)/.local/bin"
+	mkdir -p $$APPS_BIN
+	cp -R $(CURDIR)/apps/colorcfg $$APPS_BIN/colorcfg
+	cd $$APPS_BIN/colorcfg && python3 -m compileall -b . || python -m compileall .
 
 .PHONY: system
 system: # System specific

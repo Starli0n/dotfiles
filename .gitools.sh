@@ -30,9 +30,11 @@ elif [ "$1" = "difftool" ] && [ "$#" -eq 4 ] ; then
 			read -n 1 -s -r -p "--- Press any key to continue ---"
 			tput rc && tput ed
 		elif [ "$OS_TYPE" == "Linux" ] || [ "$OS_TYPE" == "Darwin" ]; then
-			"bcomp" -title1="Base - $2" -title2="$CAPTION - $3" "$2" "$3"
+			# "bcomp" -title1="Base - $2" -title2="$CAPTION - $3" "$2" "$3"
+			code -w -d "$2" "$3"
 		else
-			"$WINMERGE_BIN" -e -u -dl "Base - $2" -dr "$CAPTION - $3" "$2" "$3"
+			# "$WINMERGE_BIN" -e -u -dl "Base - $2" -dr "$CAPTION - $3" "$2" "$3"
+			code -w -d "$2" "$3"
 		fi
 	fi
 

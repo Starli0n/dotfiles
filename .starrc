@@ -1,8 +1,6 @@
 #echo .starrc
 
 ### Default Path
-# Print default PATH
-#echo -e PATH=\\n${PATH//:/\\n}
 [[ "$INIT_PATH" == "" ]] && export INIT_PATH=$PATH
 export PATH=$INIT_PATH
 
@@ -137,23 +135,24 @@ fi
 ### VARIABLE ###
 ################
 
-# DATE_TIME=$(date +%Y%m%d%H%M%S) # Create a time stamp
+export DATE_TIME="date +%Y%m%d%H%M%S" # Create a time stamp: eval $DATE_TIME
 
 export RC_FILE="$HOME/.starrc"
 export XAUTHORITY=$HOME/.Xauthority
 
-export EDITOR="subl"
-export GIT_EDITOR="$EDITOR -w"
-export APPS="$HOME/apps"
+export EDITOR='code'
+export GIT_EDITOR='$EDITOR -r -w'
+export APPS="$HOME/.local"
 export DOWNLOADS="$HOME/Downloads"
-export SRC_DIR="$HOME/Sources"
 unset TMOUT # Prevent disconnection
+# alias tmout='exec env TMOUT=7200 bash'
 
 ### Path
 export PATH=$APPS/bin:$PATH
 
 ### Load other files...
-for file in ~/.{dockerfunc,extra}; do
+# for file in ~/.{dockerfunc,extra}; do
+for file in ~/.extra; do
     if [[ -r "$file" ]] && [[ -f "$file" ]]; then
         source "$file"
     fi
@@ -166,6 +165,7 @@ unset file
 #############
 
 ### aliases
+alias reload='exec $SHELL -l'
 alias ralias='source $RC_FILE'
 alias aliases='$EDITOR $RC_FILE'
 alias aliash='cat $RC_FILE'
@@ -235,19 +235,31 @@ _proxy () {
 #alias proxy='_proxy http://proxy-name.fr:3128'
 #alias proxy-local='_proxy socks5://localhost:3128'
 
+### Visual Code
+alias vc='$EDITOR -r'
+alias pvc='_pvc(){ "$@" | code -r -; }; _pvc'
+
 ### Git
 alias g='git'
-alias gg='python $APPS/colorcfg/colorcfg.pyc $HOME/.gitconfig'
+alias gg='python $APPS/bin/colorcfg/colorcfg.pyc $HOME/.gitconfig'
 alias gl='git log --pretty=oneline --color --abbrev-commit --graph --decorate --all'
 alias gll='git log --pretty=oneline --color --abbrev-commit --graph --decorate --first-parent'
 alias gst='git status'
 alias gdt='git difftool'
 alias gh='cat $HOME/.gitconfig'
+alias gpf='g a . && g cian && g pomf'
+alias gftb='g fta && g rb'
+gpatch() { # Create an archive of modified files
+    rm -f *-patch-from-*.tgz
+    local archive=$(basename $(git rev-parse --show-toplevel))-patch-from-$(git rev-parse --short HEAD).tgz
+    git ls-files -m --exclude-standard --others | tar Tczfv - $archive
+}
 alias gv='git --version'
+# __git_complete g _git
 
 ### Python
 # python -m compileall .
-alias venv-create='python3 -m venv venv'
+alias venv-create='python -m venv venv'
 alias venv-freeze='pip freeze 2>/dev/null > requirements.txt'
 alias venv-install='pip install -r requirements.txt'
 alias venv='. venv/bin/activate 2> /dev/null || . venv/Scripts/activate 2> /dev/null || (echo No Python Virtual Env found; exit 127)'
@@ -266,6 +278,7 @@ alias dri='docker run -it'
 alias dh='_dh(){ docker $* --help; }; _dh'
 alias dhw='docker run hello-world'
 alias duber='docker run -dit --name uber --volume /var/shared/default:/var/shared ubuntu /bin/bash'
+alias box='docker run -it --rm -v /:/mnt -w /mnt$PWD busybox:latest'
 alias dbh='_dbh(){ docker exec -it $* /bin/bash; }; _dbh'
 alias dps='docker ps'
 alias dpsa='docker ps -a'
@@ -294,6 +307,7 @@ alias drmia='docker rmi $(docker images -q)'
 alias drmvd='docker volume rm $(docker volume ls -f "dangling=true" -q)'
 alias drmnc='docker network rm $(docker network ls --filter type=custom -q)'
 alias dinf='docker info'
+complete -F _complete_alias d
 
 ### docker-compose
 alias dc='docker-compose'
@@ -301,6 +315,7 @@ alias dcu='docker-compose up' # => docker-compose -f docker-compose.yml -f docke
 alias dcd='docker-compose down' # => docker-compose -f docker-compose.yml -f docker-compose.override.yml down
 alias dcup='docker-compose -f docker-compose.yml -f production.yml up'
 alias dcdp='docker-compose -f docker-compose.yml -f production.yml down'
+complete -F _docker_compose dc
 
 ### kubernetes
 alias k='kubectl'
@@ -311,6 +326,9 @@ alias a='ansible'
 alias ag='ansible-galaxy'
 alias act='ansible-container'
 alias av='ansible --version'
+
+### Call Extra Callback
+extra-callback
 
 ### Versions
 ver () {

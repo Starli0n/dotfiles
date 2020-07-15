@@ -81,8 +81,7 @@ proxy () {
 	export npm_config_https_proxy=$https_proxy
 }
 
-
-# On a headless server
+# On a headless server => make headless
 export EDITOR='vim'
 export GIT_EDITOR=$EDITOR
 export GIT_NO_GUI=--git-no-gui # Used in ~/gitools.sh for difftool
