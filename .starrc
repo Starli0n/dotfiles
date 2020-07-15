@@ -167,7 +167,7 @@ unset file
 ### aliases
 alias reload='exec $SHELL -l'
 alias ralias='source $RC_FILE'
-alias aliases='$EDITOR $RC_FILE'
+alias aliases='$EDITOR $RC_FILE ${HOME}/.extra'
 alias aliash='cat $RC_FILE'
 
 ### Shell
@@ -259,6 +259,7 @@ alias gv='git --version'
 
 ### Python
 # python -m compileall .
+export PYBIN=$((which python3 > /dev/null 2>&1 && echo python3) || (which python > /dev/null 2>&1 && echo python))
 alias venv-create='python -m venv venv'
 alias venv-freeze='pip freeze 2>/dev/null > requirements.txt'
 alias venv-install='pip install -r requirements.txt'

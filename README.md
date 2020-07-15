@@ -49,7 +49,7 @@ Alternatively, the variable `$SRC_DIR` could be set manually with `export SRC_DI
 	* `make all`
 * Ubuntu
 	* `make ubuntu`
-* Windows
+* Windows _(Check `$HOME` before)_
 	* `make win`
 
 Add some specific into the `.extra` dotfile like proxy etc...
