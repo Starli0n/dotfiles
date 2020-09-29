@@ -42,6 +42,15 @@ The folder `src` can be changed to something like `Develop/Sources` therefore th
 
 Alternatively, the variable `$SRC_DIR` could be set manually with `export SRC_DIR=path-to-source` before installation if the architecture `$SRC_DIR/organization/user` is not respected.
 
+### macOS
+
+- [Install Homebrew](https://brew.sh)
+	- `brew install git`
+	- `brew install make`
+	- `brew install gettext` (includes `envsubst`)
+- Visual Studio Code on macOS
+	- [Launching from the command line](https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line)
+
 
 ## Installation
 
