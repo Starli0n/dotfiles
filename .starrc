@@ -97,8 +97,8 @@ elif [[ "$OS_TYPE" == "Darwin" ]]; then
     export PATH="$PATH:/bin:/usr/sbin:/sbin"
     export GIT_OPEN_URL=open
 
-    alias l='ls -plahG'
-    alias l.='ls -dUlphG -F -- .* *'
+    alias l='ls -plahG --color'
+    alias l.='ls -dUlphG -F --color -- .* *'
     alias e.='open .'
     alias cpwd='pwd; pwd | pbcopy'
 
@@ -242,7 +242,7 @@ alias pvc='_pvc(){ "$@" | code -r -; }; _pvc'
 ### Git
 alias g='git'
 alias gg='python $APPS/bin/colorcfg/colorcfg.pyc $HOME/.gitconfig'
-alias gl='git log --pretty=oneline --color --abbrev-commit --graph --decorate --all'
+# alias gl='git log --pretty=oneline --color --abbrev-commit --graph --decorate --all'
 alias gll='git log --pretty=oneline --color --abbrev-commit --graph --decorate --first-parent'
 alias gst='git status'
 alias gdt='git difftool'
@@ -256,6 +256,17 @@ gpatch() { # Create an archive of modified files
 }
 alias gv='git --version'
 # __git_complete g _git
+unalias gl
+alias _gitlog='git log --pretty=format:"%C(yellow)%h %C(blue)%<(6)%an%C(red)%d %Creset%s %C(green)(%cd)%Creset" --graph --decorate $CURRENT_BRANCH $CURRENT_REMOTE_BRANCH'
+gl () {
+    export CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
+    export CURRENT_REMOTE_BRANCH=$(git branch -a | grep origin/$CURRENT_BRANCH > /dev/null && echo origin/$CURRENT_BRANCH)
+    export GIT_PAGER='cat'
+    _gitlog --after="yesterday" --date=relative
+    echo -e "${GREEN}\n* -------------- Yesterday${NORMAL}"
+    _gitlog --before="yesterday" --date=format:"%A %d/%m %H:%M" -n 20 # --date=format:"%A %Y-%m-%d %H:%M:%S"
+    unset GIT_PAGER
+}
 
 ### Python
 # python -m compileall .
