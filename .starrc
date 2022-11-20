@@ -169,6 +169,8 @@ alias reload='exec $SHELL -l'
 alias ralias='source $RC_FILE'
 alias aliases='$EDITOR $RC_FILE ${HOME}/.extra'
 alias aliash='cat $RC_FILE'
+alias star='$EDITOR $HOME/.starrc'
+alias extra='$EDITOR $HOME/.extra'
 
 ### Shell
 alias rm='rm -i'
