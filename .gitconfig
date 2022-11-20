@@ -2,14 +2,16 @@
 	name = Starli0n
 	email = Starli0n@users.noreply.github.com
 [core]
-	editor = $GIT_EDITOR
+	editor = code --wait
 	#pager = cat # Prevent keypress from log command or use git --no-pager
-	pager = more
-	autocrlf = input
+	excludesfile = ~/.gitignore.global
+	pager = cat
 [http]
 	sslverify = false
 	#proxy = "http://user:pass@proxy.com:port"
 	#sslCAinfo = ca-bundle.crt
+[init]
+	defaultBranch = master
 [color]
 	ui = true
 [diff]
@@ -22,8 +24,11 @@
 	cmd = ~/.gitools.sh difftool \"$LOCAL\" \"$REMOTE\" cached
 [difftool "sublime"]
 	cmd = ~/.gitools.sh sublime \"$LOCAL\" \"$REMOTE\"
+[rebase]
+	autoStash = true
 [merge]
 	tool = gitools
+	ff = only
 [mergetool]
 	prompt = false
 [mergetool "gitools"]
@@ -31,6 +36,11 @@
 	cmd = ~/.gitools.sh mergetool \"$LOCAL\" \"$REMOTE\" \"$BASE\" \"$MERGED\"
 [include]
 	path = ~/.gitconfig.id
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
 [alias]
 	h = help
 	g = "!cat ~/.gitconfig" # Show me
@@ -50,6 +60,7 @@
 	upm = remote add --track master upstream # Add forked repo @URL
 
 	ll = log --pretty=oneline --color --abbrev-commit --graph --decorate --first-parent # Smart log current branch
+	lm = log --pretty=oneline --color --abbrev-commit --graph --decorate --first-parent origin/master
 	la = log --pretty=oneline --color --abbrev-commit --graph --decorate --all # Smart log
 	llx = !git --no-pager log --pretty=oneline --abbrev-commit --decorate -1 # Show the commit of the @SHA
 	llh = !git --no-pager log --pretty=oneline --abbrev-commit --decorate -1 HEAD
@@ -78,6 +89,7 @@
 
 	fix = rebase -i HEAD~2 # Rebase the two last commits
 	st = status
+	sts = submodule foreach git status
 
 	co = checkout
 	com = checkout master
@@ -111,11 +123,12 @@
 	sft = "!git fetch --all && git submodule update --remote" # Super fetch
 
 	rb = rebase
+	rbom = rebase origin/master
 	rba = rebase --abort
 	rbc = rebase --continue
 	rbu = rebase upstream/master
 
-	mg = merge
+	mg = merge --ff-only
 	mgffo = merge --ff-only
 	mgu = merge upstream/master --ff-only
 	po = push origin master # Push local commits to remote repository branch @BRANCH_NAME
@@ -131,6 +144,8 @@
 	pup = push -u origin gh-pages
 	pupf = push -u origin gh-pages --force
 	pod = push origin --delete # Delete remote branch @BRANCH_NAME
+
+	pob = "!git push origin `git rev-parse --abbrev-ref HEAD`"
 
 	dt = difftool # (1) Diff between Staged and Modified or (2) [@OLDER_SHA @NEWER_SHA]
 	dtc = difftool --cached --tool=dtcached # Diff between Repo and Staged
