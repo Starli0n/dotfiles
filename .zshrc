@@ -5,7 +5,7 @@ export ZSH="$HOME/.oh-my-zsh"
 ZSH_THEME="starli0n"
 
 plugins=(
-  ansible dircycle docker docker-compose git golang kubectl pip python virtualenv
+  ansible colorize dircycle direnv docker docker-compose git golang kubectl macos pip python virtualenv vscode
 )
 
 source $ZSH/oh-my-zsh.sh
